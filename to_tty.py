@@ -18,9 +18,11 @@ def save_tty(id, tty):
     if not metafile.exists():
         with open(metafile, 'w') as f:
             f.write('{}')
-    else:  # read existing data
-        with open(metafile, 'r') as f:
-            metadata = json.load(f)
+
+    # read existing data
+    with open(metafile, 'r') as f:
+        metadata = json.load(f)
+
     # update data and write
     metadata.update({str(id): tty})
     with open(metafile, 'w') as f:
