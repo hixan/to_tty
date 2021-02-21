@@ -40,4 +40,7 @@ $ to-tty my_tty -c "python -c 'junk'"
 will include color in the output terminal.
 
 ## Installation
-TODO
+installation can be done with pip:
+```bash
+$ pip install to_tty
+```
