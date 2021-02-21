@@ -29,5 +29,15 @@ This behaviour differs from `echo $COLUMNS | to-tty my_tty`, which will output t
 
 This is useful if you want to run programs that output text formatted to the size of the terminal.
 
+The other thing this is useful for is getting color back for some outputs. For example:
+```bash
+$ python -c 'junk' 2>&1 | to-tty my_tty
+```
+will print the error, but without color.
+```bash
+$ to-tty my_tty -c "python -c 'junk'"
+```
+will include color in the output terminal.
+
 ## Installation
 TODO
