@@ -2,6 +2,8 @@
 
 This is a program to redirect output to other terminals in linux environments.
 
+![](images/to-tty-screencast.gif)
+
 ## Example Usage
 
 ### Save a tty
