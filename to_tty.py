@@ -79,8 +79,11 @@ def main(cache_id, set_tty: bool, command: str = None):
         active_pid = 0
         save_tty(str(cache_id), get_tty(get_active_pid()))
     elif command:
+        env = environ_variables(str(cache_id))
         with ToTTY(str(cache_id)):  # redirect output to the tty
-            Popen(['script', '-eqc', command], env=environ_variables(str(cache_id)), stdout=sys.stdout)
+            # previously used 'script', '-eqc', command but this was broken in
+            # an update.
+            Popen(command, env=env, stdout=sys.stdout, shell=True)
     else:  # print stdin to stdout (which is redirected to tty)
         with ToTTY(str(cache_id)):
             while True:
@@ -120,10 +123,21 @@ def get_window_info(wid, atom=None):
 
 
 def environ_variables(id):
+    '''update environment variables for call
+
+    copy environment variables from source process (the one that calls this
+    script) and update LINES and COLUMNS to be the same as the destination
+    terminal (the one with id)
+    '''
+    # get tty name
     tty = ToTTY(id).tty
-    rows, columns = Popen(['stty', '-F', tty, 'size'], stdout=PIPE).communicate()[0].decode('utf-8').split()
+    # get relevant information using stty
+    rows, columns = Popen(['stty', '-F', tty, 'size'], stdout=PIPE
+            ).communicate()[0].decode('utf-8').split()
+    # get existing environment
     rv = os.environ.copy()
-    rv.update({'ROWS': rows, 'COLUMNS': columns})
+    # add relevant information
+    rv.update({'LINES': rows, 'COLUMNS': columns})
     return rv
 
 
