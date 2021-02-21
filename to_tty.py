@@ -83,7 +83,7 @@ def main(cache_id, set_tty: bool, command: str = None):
         with ToTTY(str(cache_id)):  # redirect output to the tty
             # previously used 'script', '-eqc', command but this was broken in
             # an update.
-            Popen(command, env=env, stdout=sys.stdout, shell=True)
+            Popen(command, env=env, stdout=sys.stdout, stderr=sys.stdout, shell=True)
     else:  # print stdin to stdout (which is redirected to tty)
         with ToTTY(str(cache_id)):
             while True:
